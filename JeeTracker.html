@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My JEE Tracker</title>
+<style>
+  :root {
+    --physics-color: #2f5fd8;
+    --chemistry-color: #d81b60;
+    --maths-color: #2e7d32;
+    --bg-color: #f2f4f8;
+    --card-bg: #ffffff;
+    --text-main: #22262b;
+    --text-muted: #6b7280;
+    --border-color: #e6e8ee;
+    --shadow: 0 4px 14px rgba(20, 25, 40, 0.08);
+    --shadow-hover: 0 8px 22px rgba(20, 25, 40, 0.14);
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    font-family: "Segoe UI", Arial, Helvetica, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    padding: 28px 24px 60px;
+  }
+
+  header.page-header {
+    max-width: 1300px;
+    margin: 0 auto 28px;
+    text-align: center;
+  }
+
+  header.page-header h1 {
+    margin: 0 0 6px;
+    font-size: 2rem;
+    letter-spacing: 0.3px;
+  }
+
+  header.page-header p {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+  }
+
+  header.page-header p.quote {
+    font-size: 1.05rem;
+    font-style: italic;
+    font-weight: 600;
+    color: #d81b60;
+    margin: 0 0 8px;
+  }
+
+  .countdown-box {
+    margin: 16px auto 0;
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    background: linear-gradient(135deg, #2f5fd8, #6a3fd8);
+    color: #ffffff;
+    padding: 10px 20px;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+  }
+
+  #countdown-text {
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: 0.2px;
+  }
+
+  #countdown-text .countdown-number {
+    font-size: 1.25rem;
+    margin: 0 3px;
+  }
+
+  .countdown-date-picker {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.82rem;
+    color: #eef0ff;
+  }
+
+  .countdown-date-picker input[type="date"] {
+    border: none;
+    border-radius: 6px;
+    padding: 4px 6px;
+    font-size: 0.82rem;
+    font-family: inherit;
+  }
+
+  .subjects-container {
+    max-width: 1300px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+    align-items: start;
+  }
+
+  @media (max-width: 900px) {
+    .subjects-container {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .subject-card {
+    background-color: var(--card-bg);
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .subject-card h2 {
+    margin: 0 0 6px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    color: #ffffff;
+    text-align: center;
+    font-size: 1.15rem;
+    letter-spacing: 0.6px;
+  }
+
+  .subject-card.physics h2 {
+    background-color: var(--physics-color);
+  }
+
+  .subject-card.chemistry h2 {
+    background-color: var(--chemistry-color);
+  }
+
+  .subject-card.maths h2 {
+    background-color: var(--maths-color);
+  }
+
+  .progress-counter {
+    text-align: center;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin: 4px 0 14px;
+    font-weight: 600;
+  }
+
+  .subject-card.physics .progress-counter {
+    color: var(--physics-color);
+  }
+
+  .subject-card.chemistry .progress-counter {
+    color: var(--chemistry-color);
+  }
+
+  .subject-card.maths .progress-counter {
+    color: var(--maths-color);
+  }
+
+  .chapter-list {
+    overflow-y: auto;
+    max-height: 65vh;
+    padding-right: 4px;
+  }
+
+  .chapter-list::-webkit-scrollbar {
+    width: 7px;
+  }
+
+  .chapter-list::-webkit-scrollbar-thumb {
+    background-color: #cfd4de;
+    border-radius: 10px;
+  }
+
+  .group-heading {
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--text-muted);
+    margin: 16px 2px 8px;
+    font-weight: 700;
+  }
+
+  .group-heading:first-child {
+    margin-top: 2px;
+  }
+
+  .chapter {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    margin-bottom: 8px;
+    overflow: hidden;
+    transition: box-shadow 0.2s ease, transform 0.15s ease;
+  }
+
+  .chapter:hover {
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-1px);
+  }
+
+  .chapter-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 11px 12px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.94rem;
+    color: var(--text-main);
+    user-select: none;
+    text-align: left;
+  }
+
+  .chapter-title input[type="checkbox"] {
+    width: 17px;
+    height: 17px;
+    flex-shrink: 0;
+    cursor: pointer;
+    accent-color: #4b5563;
+  }
+
+  .chapter-title .chapter-name {
+    flex: 1;
+    transition: color 0.15s ease;
+  }
+
+  .chapter-title .chevron {
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    transition: transform 0.25s ease;
+    flex-shrink: 0;
+  }
+
+  .chapter.expanded .chevron {
+    transform: rotate(90deg);
+  }
+
+  .chapter-title .chapter-name.done {
+    text-decoration: line-through;
+    color: var(--text-muted);
+  }
+
+  .sub-options {
+    max-height: 0;
+    overflow: hidden;
+    background-color: #f7f8fc;
+    transition: max-height 0.3s ease, padding 0.3s ease;
+    padding: 0 14px;
+  }
+
+  .chapter.expanded .sub-options {
+    max-height: 260px;
+    padding: 10px 14px 14px;
+  }
+
+  .sub-options label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 0;
+    font-size: 0.87rem;
+    color: #3c4148;
+    cursor: pointer;
+  }
+
+  .sub-options input[type="checkbox"] {
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+    accent-color: #4b5563;
+  }
+
+  .sub-options label span.done {
+    text-decoration: line-through;
+    color: var(--text-muted);
+  }
+
+  footer.page-footer {
+    max-width: 1300px;
+    margin: 30px auto 0;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.82rem;
+  }
+</style>
+</head>
+<body>
+
+<header class="page-header">
+  <h1>My JEE Tracker</h1>
+  <p class="quote">🌸 Small progress everyday leads to big results 🌸</p>
+  <p>Track every chapter across Physics, Chemistry and Mathematics.</p>
+  <div class="countdown-box">
+    <span id="countdown-text">Set your JEE exam date to start the countdown ⏳</span>
+    <label class="countdown-date-picker">
+      Exam date:
+      <input type="date" id="exam-date-input">
+    </label>
+  </div>
+</header>
+
+<main class="subjects-container">
+
+  <section class="subject-card physics" id="card-physics">
+    <h2>⚛️ PHYSICS</h2>
+    <p class="progress-counter" id="counter-physics">0 of 0 chapters completed</p>
+    <div class="chapter-list" id="list-physics"></div>
+  </section>
+
+  <section class="subject-card chemistry" id="card-chemistry">
+    <h2>🧪 CHEMISTRY</h2>
+    <p class="progress-counter" id="counter-chemistry">0 of 0 chapters completed</p>
+    <div class="chapter-list" id="list-chemistry"></div>
+  </section>
+
+  <section class="subject-card maths" id="card-maths">
+    <h2>📐 MATHEMATICS</h2>
+    <p class="progress-counter" id="counter-maths">0 of 0 chapters completed</p>
+    <div class="chapter-list" id="list-maths"></div>
+  </section>
+
+</main>
+
+<footer class="page-footer">
+  Progress is saved automatically in this browser.
+</footer>
+
+<script>
+(function () {
+  "use strict";
+
+  /* ---------------------------------------------------------------
+     CHAPTER DATA
+     Every chapter name below is preserved exactly as in the
+     original file. Physics and Mathematics chapters use the
+     standard sub-item set; Chemistry chapters use the NCERT set.
+  --------------------------------------------------------------- */
+
+  var STANDARD_SUBITEMS = ["Reference Book", "DPP", "PYQs", "Revision"];
+  var CHEMISTRY_SUBITEMS = ["NCERT", "Reference Book", "DPP", "PYQs", "Revision"];
+
+  var physicsChapters = [
+    "Units And Measurement",
+    "Vectors",
+    "Kinematics",
+    "Laws Of Motion",
+    "Work Power Energy",
+    "Circular Motion",
+    "Center Of Mass",
+    "Rotational Motion",
+    "Mechanical Properties Of Solids",
+    "Mechanical Properties Of Fluids",
+    "Thermal Properties Of Matter",
+    "Gravitation",
+    "Kinetic Thoery Of Gases",
+    "Thermodynamics",
+    "Oscillations",
+    "Waves",
+    "Electrostatics",
+    "Electric Potential Capacitance",
+    "Current Electricity",
+    "Moving Charges And Magnetism",
+    "Magnetism & Matter",
+    "Electromagnetic Induction",
+    "Alternating Current",
+    "Electromagnetic Waves",
+    "Ray Optics",
+    "Wave Optics",
+    "Dual Nature Of Matter",
+    "Atoms & Nuclei",
+    "Semiconductors",
+    "Experimental Skills"
+  ];
+
+  var chemistryGroups = [
+    {
+      heading: "Physical Chemistry",
+      chapters: [
+        "Some Basic Concepts Of Chemistry",
+        "Structure Of Atom",
+        "States Of Matter",
+        "Thermodynamics",
+        "Chemical Equilibrium",
+        "Ionic Equilibrium",
+        "Redox Reactions",
+        "Solutions",
+        "Electrochemistry",
+        "Chemical Kinetics"
+      ]
+    },
+    {
+      heading: "Inorganic Chemistry",
+      chapters: [
+        "Periodic Table",
+        "Chemical Bonding And Molecular Structure",
+        "The S-Block Elements",
+        "The p-Block Elements",
+        "The d & f Block Elements",
+        "Coordination Compounds"
+      ]
+    },
+    {
+      heading: "Organic Chemistry",
+      chapters: [
+        "IUPAC",
+        "General Organic Chemistry",
+        "Isomerism",
+        "Reaction Mechanism",
+        "HydroCarbons",
+        "Enviromental Chemistry",
+        "Haloalkanes & Haloarenes",
+        "Alcohols,Phenol,Ether",
+        "Aldehydes,Ketones &Carboxylic Acids",
+        "Amines",
+        "Biomolecules"
+      ]
+    }
+  ];
+
+  var mathsChapters = [
+    "Sets",
+    "Quadratic Equations",
+    "Trignometric Function",
+    "Complex Numbers",
+    "Linear Inequalities",
+    "Sequence And Series",
+    "Binomial Theorem",
+    "Determinants",
+    "Matrices",
+    "Permutations And Combinations",
+    "Straight Lines",
+    "Circles",
+    "Conic Sections(Parabola)",
+    "Conic Sections(Ellipse)",
+    "Conic Sections(Hyperbola)",
+    "Vector Algebra",
+    "3-Dimensional Geometry",
+    "Functions And Relations",
+    "Limits",
+    "Continuity And Differentiability",
+    "Inverse Trignometric Functions",
+    "Method Of Differentiation",
+    "Application Of Derivatives",
+    "Indefinite Integration",
+    "Definite Integration",
+    "Application Of Integrals",
+    "Differential Equations",
+    "Probability",
+    "Statistics"
+  ];
+
+  /* ---------------------------------------------------------------
+     HELPERS
+  --------------------------------------------------------------- */
+
+  function slugify(text) {
+    return text
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/(^-|-$)/g, "");
+  }
+
+  var STORAGE_KEY = "jeeTrackerProgressV2";
+  var progressStore = loadStore();
+
+  function loadStore() {
+    try {
+      var raw = localStorage.getItem(STORAGE_KEY);
+      return raw ? JSON.parse(raw) : {};
+    } catch (e) {
+      return {};
+    }
+  }
+
+  function saveStore() {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(progressStore));
+    } catch (e) {
+      /* localStorage unavailable - progress will not persist */
+    }
+  }
+
+  /* ---------------------------------------------------------------
+     BUILDING A CHAPTER ELEMENT
+  --------------------------------------------------------------- */
+
+  function buildChapter(subjectKey, chapterName, subItems) {
+    var id = subjectKey + "__" + slugify(chapterName);
+
+    var chapterEl = document.createElement("div");
+    chapterEl.className = "chapter";
+    chapterEl.dataset.chapterId = id;
+
+    var titleEl = document.createElement("div");
+    titleEl.className = "chapter-title";
+
+    var mainCheckbox = document.createElement("input");
+    mainCheckbox.type = "checkbox";
+    mainCheckbox.className = "main-checkbox";
+    mainCheckbox.id = id + "__main";
+
+    var nameSpan = document.createElement("span");
+    nameSpan.className = "chapter-name";
+    nameSpan.textContent = chapterName;
+
+    var chevron = document.createElement("span");
+    chevron.className = "chevron";
+    chevron.textContent = "\u25B8";
+
+    titleEl.appendChild(mainCheckbox);
+    titleEl.appendChild(nameSpan);
+    titleEl.appendChild(chevron);
+
+    var subOptionsEl = document.createElement("div");
+    subOptionsEl.className = "sub-options";
+
+    var subCheckboxes = [];
+
+    subItems.forEach(function (label, index) {
+      var subId = id + "__sub" + index;
+      var labelEl = document.createElement("label");
+
+      var cb = document.createElement("input");
+      cb.type = "checkbox";
+      cb.id = subId;
+
+      var span = document.createElement("span");
+      span.textContent = label;
+
+      labelEl.appendChild(cb);
+      labelEl.appendChild(span);
+      subOptionsEl.appendChild(labelEl);
+
+      subCheckboxes.push(cb);
+
+      cb.addEventListener("change", function () {
+        span.classList.toggle("done", cb.checked);
+        setState(subId, cb.checked);
+      });
+    });
+
+    /* restore saved state */
+    if (getState(id + "__main")) {
+      mainCheckbox.checked = true;
+      nameSpan.classList.add("done");
+    }
+    subCheckboxes.forEach(function (cb) {
+      if (getState(cb.id)) {
+        cb.checked = true;
+        cb.nextElementSibling.classList.add("done");
+      }
+    });
+
+    /* expand / collapse on title click (not on checkbox click) */
+    titleEl.addEventListener("click", function (evt) {
+      if (evt.target === mainCheckbox) {
+        return;
+      }
+      var alreadyExpanded = chapterEl.classList.contains("expanded");
+      var siblingChapters = chapterEl.parentElement.querySelectorAll(".chapter.expanded");
+      siblingChapters.forEach(function (el) {
+        el.classList.remove("expanded");
+      });
+      if (!alreadyExpanded) {
+        chapterEl.classList.add("expanded");
+      }
+    });
+
+    mainCheckbox.addEventListener("change", function () {
+      nameSpan.classList.toggle("done", mainCheckbox.checked);
+      setState(id + "__main", mainCheckbox.checked);
+      updateCounter(subjectKey);
+    });
+
+    chapterEl.appendChild(titleEl);
+    chapterEl.appendChild(subOptionsEl);
+
+    return { element: chapterEl, mainCheckbox: mainCheckbox };
+  }
+
+  function getState(key) {
+    return !!progressStore[key];
+  }
+
+  function setState(key, value) {
+    progressStore[key] = value;
+    saveStore();
+  }
+
+  /* ---------------------------------------------------------------
+     COUNTERS
+  --------------------------------------------------------------- */
+
+  var subjectMainCheckboxes = {
+    physics: [],
+    chemistry: [],
+    maths: []
+  };
+
+  function updateCounter(subjectKey) {
+    var boxes = subjectMainCheckboxes[subjectKey];
+    var doneCount = boxes.filter(function (cb) {
+      return cb.checked;
+    }).length;
+    var counterEl = document.getElementById("counter-" + subjectKey);
+    counterEl.textContent = doneCount + " of " + boxes.length + " chapters completed";
+  }
+
+  /* ---------------------------------------------------------------
+     RENDERING EACH SUBJECT
+  --------------------------------------------------------------- */
+
+  function renderSimpleSubject(subjectKey, listElId, chapterNames, subItems) {
+    var listEl = document.getElementById(listElId);
+    chapterNames.forEach(function (chapterName) {
+      var result = buildChapter(subjectKey, chapterName, subItems);
+      listEl.appendChild(result.element);
+      subjectMainCheckboxes[subjectKey].push(result.mainCheckbox);
+    });
+    updateCounter(subjectKey);
+  }
+
+  function renderGroupedSubject(subjectKey, listElId, groups, subItems) {
+    var listEl = document.getElementById(listElId);
+    groups.forEach(function (group) {
+      var heading = document.createElement("div");
+      heading.className = "group-heading";
+      heading.textContent = group.heading;
+      listEl.appendChild(heading);
+
+      group.chapters.forEach(function (chapterName) {
+        var result = buildChapter(subjectKey, chapterName, subItems);
+        listEl.appendChild(result.element);
+        subjectMainCheckboxes[subjectKey].push(result.mainCheckbox);
+      });
+    });
+    updateCounter(subjectKey);
+  }
+
+  renderSimpleSubject("physics", "list-physics", physicsChapters, STANDARD_SUBITEMS);
+  renderGroupedSubject("chemistry", "list-chemistry", chemistryGroups, CHEMISTRY_SUBITEMS);
+  renderSimpleSubject("maths", "list-maths", mathsChapters, STANDARD_SUBITEMS);
+
+  /* ---------------------------------------------------------------
+     COUNTDOWN TO EXAM DATE
+  --------------------------------------------------------------- */
+
+  var EXAM_DATE_KEY = "jeeTrackerExamDate";
+  var examDateInput = document.getElementById("exam-date-input");
+  var countdownText = document.getElementById("countdown-text");
+
+  function getSavedExamDate() {
+    try {
+      return localStorage.getItem(EXAM_DATE_KEY) || "";
+    } catch (e) {
+      return "";
+    }
+  }
+
+  function saveExamDate(value) {
+    try {
+      localStorage.setItem(EXAM_DATE_KEY, value);
+    } catch (e) {
+      /* localStorage unavailable - exam date will not persist */
+    }
+  }
+
+  function renderCountdown() {
+    var savedDate = getSavedExamDate();
+    if (!savedDate) {
+      countdownText.textContent = "Set your JEE exam date to start the countdown \u23F3";
+      return;
+    }
+
+    var today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    var parts = savedDate.split("-").map(Number);
+    var target = new Date(parts[0], parts[1] - 1, parts[2]);
+    target.setHours(0, 0, 0, 0);
+
+    var msPerDay = 24 * 60 * 60 * 1000;
+    var diffDays = Math.round((target - today) / msPerDay);
+
+    if (diffDays > 0) {
+      countdownText.innerHTML =
+        "\uD83D\uDD25 <span class=\"countdown-number\">" + diffDays + "</span> day" +
+        (diffDays === 1 ? "" : "s") + " left for JEE!";
+    } else if (diffDays === 0) {
+      countdownText.textContent = "\uD83D\uDE80 Today is the day! All the best!";
+    } else {
+      countdownText.textContent = "\u2705 Exam date has passed.";
+    }
+  }
+
+  var savedExamDate = getSavedExamDate();
+  if (savedExamDate) {
+    examDateInput.value = savedExamDate;
+  }
+  renderCountdown();
+
+  examDateInput.addEventListener("change", function () {
+    saveExamDate(examDateInput.value);
+    renderCountdown();
+  });
+
+  /* refresh the countdown once a minute so it stays accurate
+     without needing a page refresh */
+  setInterval(renderCountdown, 60000);
+
+})();
+</script>
+
+</body>
+</html>
