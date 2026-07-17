@@ -1,4 +1,4 @@
-# Jee-Tracker
+ # Jee-Tracker
  JEE Study Tracker.
 This project is a simple JEE Study Tracker that helps students to organize Physics,Chemistry and Mathematics chapters and their JEE preparation in simple and structured way.
 I created this project to make chapter-wise planning and progress tracking easier. It helps JEE aspirants to stay organized, monitor completed topics, and identify the chapters that are still need to be studied.
