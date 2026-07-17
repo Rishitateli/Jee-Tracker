@@ -1,0 +1,1840 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, intial-scale=1.0">
+
+ <title>My JEE Tracker</title>
+
+ <style>
+  :root {
+  --physics-color: #2f5fd8;
+  --chemistry-color: #d81b60;
+  --maths-color: #2e7d32;
+  --bg-color: #f2f4f8;
+  --card-bg: #ffffff;
+  --text-main: #22262b;
+  --text-muted: #6b7280;
+  --border-color: #e6e8ee;
+  --shadow: 0 4px 14px rgba(20, 25, 40, 0.08);
+  --shadow-hover: 0 8px 22px rgba(20, 25, 40, 0.14);
+}
+
+* {
+  
+  box-sizing: border-box;
+
+}
+
+
+body {
+  margin: 0;
+font-family: "Segoe UI", Arial, Helvetica, sans-serif;
+
+background-color: var(--bg-color);
+
+color: var(--text-main);
+
+padding: 28px 24px 60px;
+
+}
+
+  
+header.page-header {
+
+max-width: 1300px;
+
+margin: 0 auto 28px;
+
+text-align: center;
+
+}
+
+header.page-header h1 {
+
+margin: 0 0 6px
+
+font-size: 2rem;
+
+letter-spacing: 0.3px;
+
+}
+
+
+header.page-header p {
+
+margin: 0;
+
+color: var(--text-muted);
+
+font-size: 0.95rem;
+
+}
+
+
+header.page-header p.quote {
+
+font-size: 1.05rem;
+
+font-style: italic;
+
+font-weight: 600;
+
+color: #d81b60;
+
+margin: 0 0 8px;
+
+}
+
+
+.countdown-box {
+
+
+margin: 16px auto 0;
+
+display: inline-flex;
+
+flex-wrap: wrap;
+
+align-items: center;
+
+justify-content: center;
+
+gap: 14px;
+
+background: linear-gradient(135deg, #2f5fd8, #6a3fd8);
+
+color: #ffffff;
+
+padding: 10px 20px;
+
+border-radius: 12px;
+
+box-shadow: var(--shadow);
+
+}
+
+
+
+#countdown-text {
+
+font-weight: 700;
+
+font-size: 1rem;
+
+letter-spacing: 0.2px;
+
+}
+
+
+#countdown-text .countdown-number {
+
+display: flex;
+
+align-items: center;
+
+gap: 6px;
+
+font-size: 0.82rem;
+
+color: #eef0ff;
+
+}
+
+
+.countdown-date-picker input[type="date"] {
+
+border: none;
+
+border-radius: 6px;
+
+padding: 4px 6px;
+
+font-size: 0.82rem;
+
+font-family: inherit;
+
+}
+
+
+.subjects-table {
+
+max-width: 1300px;
+
+width: 100%
+
+margin: 0 auto;
+
+border-collapse: seperate;
+
+border-spacing: 22px 0;
+
+table-layout: fixed;
+h+
+}
+
+@media (max-width: 900px) {
+
+ .subjects-table,
+ .subjects-table tr,
+ .subjects-table td {
+   
+   display: block;
+
+  width: 100%
+
+   }
+
+.subjects-table td {
+
+  margin-bottom: 22px;
+
+  } 
+
+}
+
+
+.subject-card {
+
+background-color: var(--card-bg);
+
+border-radius: 16px;
+
+box-shadow: var(--shadow);
+
+padding: 20px;
+
+display: flex;
+
+flex-direction: column;
+
+height: 100%;
+
+}
+
+.subject-card.physics h2 {
+  
+margin: 0 0 6px;
+
+padding: 12px 14px;
+
+border-radius: 10px;
+
+color: #ffffff;
+
+text-align: center;
+
+font-size: 1.15rem;
+
+letter-spacing: 0.6px;
+
+}
+
+
+.subject-card.physics h2 {
+  
+  background-color: var(--physics-color);
+}
+
+.subject-card.chemistry h2 {
+ 
+ background-color: var(--chemistry-color);
+}
+
+.subject-card.maths h2 {
+
+ background-color: var(--maths-color);
+
+}
+
+.progress-counter {
+
+text-align: center;
+
+font-size: 0.9rem;
+
+color: var(--text-muted);
+
+margin: 4px 0 14px;
+
+font-weight: 600;
+
+}
+
+.subject-card.physics .progress-counter {
+
+color: var(--physics-color);
+
+}
+
+.subject-card.chemistry .progress-counter {
+  
+ color: var(--chemistry-color);
+
+}
+
+
+.subject-card.maths .progress-counter {
+
+ color: var(--maths-color);
+
+}
+
+.chapter-list {
+  
+ overflow-y: auto;
+
+ max-height: 520px;
+}
+
+.chapter-list::-webkit-scrollbar {
+ 
+ width: 7px;
+
+}
+
+.chapter-list::-webkit-scrollbar-thumb {
+ 
+ background-color: #cfd4e4;
+
+border-radius: 10px;
+
+}
+
+
+.group-heading {
+
+ font-size: 0.78rem;
+
+text-transform: uppercase;
+
+letter-spacing: 0.8px;
+
+color: var(--text-muted);
+
+margin: 16px 2px 8px;
+
+font-weight: 700;
+
+}
+
+
+.group-heading {
+ 
+margin-top: 2px;
+
+}
+
+
+.chapter {
+
+background-color: var(--card-bg);
+
+border: 1px solid var(--border-color);
+
+border-radius: 10px
+
+margin-bottom: 8px;
+
+overflow: hidden;
+
+transition: box-shadow 0.2s ease, transform 0.15s ease;
+
+}
+
+.chapter-title {
+
+display: flex;
+
+align-items: center;
+
+gap: 10px;
+
+padding: 11px 12px;
+
+cursor: pointer;
+
+font-weight: 600;
+
+font-size: 0.94rem;
+
+color: var(--text-main);
+
+user-select: none;
+
+text-align: left;
+
+}
+
+.chapter-title input[type="checkbox"] {
+  
+  width: 17px;
+
+ height: 17px;
+
+flex-shrink: 0;
+
+cursor: pointer;
+
+accent-color: #4b5563;
+
+}
+
+
+.chapter-title .chevron {
+
+color: var(--text-muted);
+
+font-size: 0.75rem;
+
+transition: transform 0.25s ease;
+
+flex-shrink: 0;
+
+}
+
+
+.chapter.expanded .chevron {
+
+transform: rotate(90deg);
+
+}
+
+
+.chapter-title .chapter-name.done {
+
+ text-decoration: line-through;
+
+color: var(--text-muted);
+
+}
+
+.sub-options {
+
+max-height: 0;
+
+overflow: hidden;
+
+background-color: #f7f8fc
+
+transition: max-height 0.3s ease' padding 0.3s ease;
+
+padding: 0 14px;
+
+}
+
+
+.chapter.expanded .sub-options {
+
+ max-height: 260px;
+
+padding: 10px 14px 14px;
+
+}
+
+
+.sub-options label {
+
+display: flex;
+
+align-items: center;
+
+gap: 8px;
+
+padding: 5px );
+
+font-size: 0.87rem;
+
+color: #c4148;
+
+cursor: pointer;
+
+}
+
+
+.sub-options label span.done {
+
+  text-decoration: line-through;
+
+color: var(--text-muted);
+
+}
+
+
+footer.page-footer {
+
+max-width: 1300px;
+
+margin: 30px auto 0;
+
+text-align: center;
+
+color: var(--text-muted);
+
+font-size: 0.82rem;
+
+}
+
+
+</style>
+
+</head>
+
+<body>
+
+<header class="page-header">
+
+
+<h1>My JEE Tracker</h1>
+
+<p class="quote">🌸 Small progress everday leads to big results 🌸</p>
+
+<p>Track every chapter across Physics, Chemistry and Mathematics.</p>
+
+<div class="countdown-box">
+
+  <span id="countdown-text">Set your JEE exam date to start the countdown ⏳</span>
+ 
+  <label class="countdown-date-picker">
+
+Exam date:
+
+ <input type="date" id="exam-date-input">
+
+</label>
+
+</div>
+
+</header>
+
+<table class="subjects-table">
+<tr>
+
+<td class="subject-card physics">
+
+<h2>⚛️ PHYSICS</h2>
+
+<p id="counter">0 of 30 chapters done</p>
+
+<div class="chapter">
+  <div class="chapter-title" onclick="toggleChapter(this)">
+    <input type="checkbox" class="main checkbox"> Units And Measurement
+ </div>
+  <div class="sub-options">
+     <label><input type="checkbox"> Reference Book</label>
+     <label><input type="checkbox"> Dpp</label>
+     <label><input type="checkbox"> Pyq's</label>
+     <label><input type="checkbox"> Revision</label>
+ </div>
+
+ </div>
+
+
+<div class="chapter">
+  <div class="chapter-title" onclick="toggleChapter(this)">
+    <input type="checkbox" class="main checkbox"> Vectors
+ </div>
+  <div class="sub-options">
+     <label><input type="checkbox"> Reference Book</label>
+     <label><input type="checkbox"> Dpp</label>
+     <label><input type="checkbox"> Pyq's</label>
+     <label><input type="checkbox"> Revision</label>
+
+ </div>
+
+</div>
+
+<div class="chapter">
+  <div class="chapter-title" onclick="toggleChapter(this)">
+    <input type="checkbox" class="main checkbox"> Kinematics
+ </div>
+  <div class="sub-options">
+     <label><input type="checkbox"> Reference Book</label>
+     <label><input type="checkbox"> Dpp</label>
+     <label><input type="checkbox"> Pyq's</label>
+     <label><input type="checkbox"> Revision</label>
+
+ </div>
+
+</div>
+
+ 
+<div class="chapter">
+  <div class="chapter-title" onclick="toggleChapter(this)">
+    <input type="checkbox" class="main checkbox"> Laws Of Motion
+ </div>
+  <div class="sub-options">
+     <label><input type="checkbox"> Reference Book</label>
+     <label><input type="checkbox"> Dpp</label>
+     <label><input type="checkbox"> Pyq's</label>
+     <label><input type="checkbox"> Revision</label>
+
+ </div>
+
+</div>
+
+<div class="chapter">
+  <div class="chapter-title" onclick="toggleChapter(this)">
+    <input type="checkbox" class="main checkbox"> Work Power Energy
+ </div>
+  <div class="sub-options">
+     <label><input type="checkbox"> Reference Book</label>
+     <label><input type="checkbox"> Dpp</label>
+     <label><input type="checkbox"> Pyq's</label>
+     <label><input type="checkbox"> Revision</label>
+
+ </div>
+
+</div>
+
+<div class="chapter">
+  <div class="chapter-title" onclick="toggleChapter(this)">
+    <input type="checkbox" class="main checkbox"> Circular Motion
+ </div>
+  <div class="sub-options">
+     <label><input type="checkbox"> Reference Book</label>
+     <label><input type="checkbox"> Dpp</label>
+     <label><input type="checkbox"> Pyq's</label>
+     <label><input type="checkbox"> Revision</label>
+
+ </div>
+
+</div>
+
+<div class="chapter">
+  <div class="chapter-title" onclick="toggleChapter(this)">
+    <input type="checkbox" class="main checkbox"> Center Of Mass
+ </div>
+  <div class="sub-options">
+     <label><input type="checkbox"> Reference Book</label>
+     <label><input type="checkbox"> Dpp</label>
+     <label><input type="checkbox"> Pyq's</label>
+     <label><input type="checkbox"> Revision</label>
+
+ </div>
+
+</div>
+
+<div class="chapter">
+  <div class="chapter-title" onclick="toggleChapter(this)">
+    <input type="checkbox" class="main checkbox"> Rotational Motion
+ </div>
+  <div class="sub-options">
+     <label><input type="checkbox"> Reference Book</label>
+     <label><input type="checkbox"> Dpp</label>
+     <label><input type="checkbox"> Pyq's</label>
+     <label><input type="checkbox"> Revision</label>
+
+ </div>
+
+</div>
+
+
+<div class="chapter">
+  <div class="chapter-title" onclick="toggleChapter(this)">
+    <input type="checkbox" class="main checkbox"> Mechanical Properties Of Solids
+ </div>
+  <div class="sub-options">
+     <label><input type="checkbox"> Reference Book</label>
+     <label><input type="checkbox"> Dpp</label>
+     <label><input type="checkbox"> Pyq's</label>
+     <label><input type="checkbox"> Revision</label>
+
+ </div>
+
+</div>
+
+
+<div class="chapter">
+  <div class="chapter-title" onclick="toggleChapter(this)">
+    <input type="checkbox" class="main checkbox"> Mechanical Properties Of Fluids
+ </div>
+  <div class="sub-options">
+     <label><input type="checkbox"> Reference Book</label>
+     <label><input type="checkbox"> Dpp</label>
+     <label><input type="checkbox"> Pyq's</label>
+     <label><input type="checkbox"> Revision</label>
+
+ </div>
+
+</div>
+
+
+<div class="chapter">
+  <div class="chapter-title" onclick="toggleChapter(this)">
+    <input type="checkbox" class="main checkbox"> Thermal Properties Of Matter
+ </div>
+  <div class="sub-options">
+     <label><input type="checkbox"> Reference Book</label>
+     <label><input type="checkbox"> Dpp</label>
+     <label><input type="checkbox"> Pyq's</label>
+     <label><input type="checkbox"> Revision</label>
+
+ </div>
+
+</div>
+
+<div class="chapter">
+  <div class="chapter-title" onclick="toggleChapter(this)">
+    <input type="checkbox" class="main checkbox"> Gravitation
+ </div>
+  <div class="sub-options">
+     <label><input type="checkbox"> Reference Book</label>
+     <label><input type="checkbox"> Dpp</label>
+     <label><input type="checkbox"> Pyq's</label>
+     <label><input type="checkbox"> Revision</label>
+
+ </div>
+
+</div>
+
+
+<div class="chapter">
+  <div class="chapter-title" onclick="toggleChapter(this)">
+    <input type="checkbox" class="main checkbox"> Kinetic Thoery Of Gases
+ </div>
+  <div class="sub-options">
+     <label><input type="checkbox"> Reference Book</label>
+     <label><input type="checkbox"> Dpp</label>
+     <label><input type="checkbox"> Pyq's</label>
+     <label><input type="checkbox"> Revision</label>
+
+ </div>
+
+</div>
+
+
+<div class="chapter">
+  <div class="chapter-title" onclick="toggleChapter(this)">
+    <input type="checkbox" class="main checkbox"> Thermodynamics
+ </div>
+  <div class="sub-options">
+     <label><input type="checkbox"> Reference Book</label>
+     <label><input type="checkbox"> Dpp</label>
+     <label><input type="checkbox"> Pyq's</label>
+     <label><input type="checkbox"> Revision</label>
+</div>
+
+ </div>
+
+
+<div class="chapter">
+  <div class="chapter-title" onclick="toggleChapter(this)">
+    <input type="checkbox" class="main checkbox"> Oscillations
+ </div>
+  <div class="sub-options">
+     <label><input type="checkbox"> Reference Book</label>
+     <label><input type="checkbox"> Dpp</label>
+     <label><input type="checkbox"> Pyq's</label>
+     <label><input type="checkbox"> Revision</label>
+
+</div>
+
+ </div>
+
+
+<div class="chapter">
+  <div class="chapter-title" onclick="toggleChapter(this)">
+    <input type="checkbox" class="main checkbox"> Waves
+ </div>
+  <div class="sub-options">
+     <label><input type="checkbox"> Reference Book</label>
+     <label><input type="checkbox"> Dpp</label>
+     <label><input type="checkbox"> Pyq's</label>
+     <label><input type="checkbox"> Revision</label>
+</div>
+
+ </div>
+
+<div class="chapter">
+  <div class="chapter-title" onclick="toggleChapter(this)">
+    <input type="checkbox" class="main checkbox"> Electrostatics
+ </div>
+  <div class="sub-options">
+     <label><input type="checkbox"> Reference Book</label>
+     <label><input type="checkbox"> Dpp</label>
+     <label><input type="checkbox"> Pyq's</label>
+     <label><input type="checkbox"> Revision</label>
+
+</div>
+
+ </div>
+
+
+<div class="chapter">
+  <div class="chapter-title" onclick="toggleChapter(this)">
+    <input type="checkbox" class="main checkbox"> Electric Potential Capacitance
+ </div>
+  <div class="sub-options">
+     <label><input type="checkbox"> Referencebook</label>
+     <label><input type="checkbox"> Dpp</label>
+     <label><input type="checkbox"> Pyq's</label>
+     <label><input type="checkbox"> Revision</label>
+</div>
+ 
+ </div>
+
+
+<div class="chapter">
+  <div class="chapter-title" onclick="toggleChapter(this)">
+    <input type="checkbox" class="main checkbox"> Current Electricity
+ </div>
+  <div class="sub-options">
+     <label><input type="checkbox"> Reference Book</label>
+     <label><input type="checkbox"> Dpp</label>
+     <label><input type="checkbox"> Pyq's</label>
+     <label><input type="checkbox"> Revision</label>
+</div>
+
+ </div>
+
+
+<div class="chapter">
+  <div class="chapter-title" onclick="toggleChapter(this)">
+    <input type="checkbox" class="main checkbox"> Moving Charges And Magnetism 
+</div>
+  <div class="sub-options">
+     <label><input type="checkbox"> Reference Book</label>
+     <label><input type="checkbox"> Dpp</label>
+     <label><input type="checkbox"> Pyq's</label>
+     <label><input type="checkbox"> Revision</label>
+</div>     
+
+
+ </div>
+
+
+<div class="chapter">
+  <div class="chapter-title" onclick="toggleChapter(this)">
+    <input type="checkbox" class="main checkbox"> Magnetism & Matter 
+</div>
+  <div class="sub-options">
+     <label><input type="checkbox"> Reference Book</label>
+     <label><input type="checkbox"> Dpp</label>
+     <label><input type="checkbox"> Pyq's</label>
+     <label><input type="checkbox"> Revision</label>
+ </div>    
+
+
+ </div>
+
+
+<div class="chapter">
+  <div class="chapter-title" onclick="toggleChapter(this)">
+    <input type="checkbox" class="main checkbox"> Electromagnetic Induction 
+</div>
+  <div class="sub-options">
+     <label><input type="checkbox"> Reference Book</label>
+     <label><input type="checkbox"> Dpp</label>
+     <label><input type="checkbox"> Pyq's</label>
+     <label><input type="checkbox"> Revision</label>
+
+</div>
+
+
+ </div>
+
+
+<div class="chapter">
+  <div class="chapter-title" onclick="toggleChapter(this)">
+    <input type="checkbox" class="main checkbox"> Alternating Current
+</div>
+  <div class="sub-options">
+     <label><input type="checkbox"> Reference Book</label>
+     <label><input type="checkbox"> Dpp</label>
+     <label><input type="checkbox"> Pyq's</label>
+     <label><input type="checkbox"> Revision</label>
+
+</div>
+
+
+ </div>
+
+
+<div class="chapter">
+  <div class="chapter-title" onclick="toggleChapter(this)">
+    <input type="checkbox" class="main checkbox"> Electromagnetic Waves
+</div>
+  <div class="sub-options">
+     <label><input type="checkbox"> Reference Book</label>
+     <label><input type="checkbox"> Dpp</label>
+     <label><input type="checkbox"> Pyq's</label>
+     <label><input type="checkbox"> Revision</label>
+
+</div>
+
+
+ </div>
+
+
+<div class="chapter">
+  <div class="chapter-title" onclick="toggleChapter(this)">
+    <input type="checkbox" class="main checkbox"> Ray Optics
+</div>
+  <div class="sub-options">
+     <label><input type="checkbox"> Reference Book</label>
+     <label><input type="checkbox"> Dpp</label>
+     <label><input type="checkbox"> Pyq's</label>
+     <label><input type="checkbox"> Revision</label>
+
+</div>
+
+
+ </div>
+
+<div class="chapter">
+  <div class="chapter-title" onclick="toggleChapter(this)">
+    <input type="checkbox" class="main checkbox"> Wave Optics
+</div>
+  <div class="sub-options">
+     <label><input type="checkbox"> Reference Book</label>
+     <label><input type="checkbox"> Dpp</label>
+     <label><input type="checkbox"> Pyq's</label>
+     <label><input type="checkbox"> Revision</label>
+
+</div>
+
+
+ </div>
+
+
+<div class="chapter">
+  <div class="chapter-title" onclick="toggleChapter(this)">
+    <input type="checkbox" class="main checkbox"> Dual Nature Of Matter
+</div>
+  <div class="sub-options">
+     <label><input type="checkbox"> Reference Book</label>
+     <label><input type="checkbox"> Dpp</label>
+     <label><input type="checkbox"> Pyq's</label>
+     <label><input type="checkbox"> Revision</label>
+
+</div>
+
+
+ </div>
+
+
+<div class="chapter">
+  <div class="chapter-title" onclick="toggleChapter(this)">
+    <input type="checkbox" class="main checkbox"> Atoms & Nuclei
+</div>
+  <div class="sub-options">
+     <label><input type="checkbox"> Reference Book</label>
+     <label><input type="checkbox"> Dpp</label>
+     <label><input type="checkbox"> Pyq's</label>
+     <label><input type="checkbox"> Revision</label>
+
+</div>
+
+
+ </div>
+
+
+<div class="chapter">
+  <div class="chapter-title" onclick="toggleChapter(this)">
+    <input type="checkbox" class="main checkbox"> Semiconductors
+</div>
+  <div class="sub-options">
+     <label><input type="checkbox"> Reference Book</label>
+     <label><input type="checkbox"> Dpp</label>
+     <label><input type="checkbox"> Pyq's</label>
+     <label><input type="checkbox"> Revision</label>
+
+</div>
+
+
+ </div>
+
+
+<div class="chapter">
+  <div class="chapter-title" onclick="toggleChapter(this)">
+    <input type="checkbox" class="main checkbox"> Experimental Skills
+</div>
+  <div class="sub-options">
+     <label><input type="checkbox"> Reference Book</label>
+     <label><input type="checkbox"> Dpp</label>
+     <label><input type="checkbox"> Pyq's</label>
+     <label><input type="checkbox"> Revision</label>
+</div>
+
+</div>
+
+</div>
+
+</td>
+
+<td class="subject-card chemistry">
+
+
+<h2> 🧪 CHEMISTRY</h2>
+
+
+<p class="progress-counter" id="counter-chemistry">0 of 27 chapters done</p>
+
+<h3>Physical Chemistry</h3>
+
+<div class="chapter">
+  <div class="chapter-title" onclick="toggleChapter(this)">
+     <input type="checkbox" class="main-checkbox"> Some Basic Concepts Of Chemistry
+  </div>
+  <div class="sub-options">
+    <label><input type="checkbox"> NCERT</label>
+    <label><input type="checkbox"> Reference Book</label>
+    <label><input type="checkbox"> Pyq's</label>
+    <label><input type="checkbox"> Dpp</label>
+    <label><input type="checkbox"> Revision</label>
+</div>
+
+<div class="chapter">
+  <div class="chapter-title" onclick="toggleChapter(this)">
+     <input type="checkbox" class="main-checkbox"> Structure Of Atom
+  </div>
+  <div class="sub-options">
+    <label><input type="checkbox"> NCERT</label>
+    <label><input type="checkbox"> Reference Book</label>
+    <label><input type="checkbox"> Pyq's</label>
+    <label><input type="checkbox"> Dpp</label>
+    <label><input type="checkbox"> Revision</label>
+</div>
+
+<div class="chapter">
+  <div class="chapter-title" onclick="toggleChapter(this)">
+     <input type="checkbox" class="main-checkbox"> States Of Matter
+  </div>
+  <div class="sub-options">
+    <label><input type="checkbox"> NCERT</label>
+    <label><input type="checkbox"> Reference Book</label>
+    <label><input type="checkbox"> Pyq's</label>
+    <label><input type="checkbox"> Dpp</label>
+    <label><input type="checkbox"> Revision</label>
+</div>
+
+<div class="chapter">
+  <div class="chapter-title" onclick="toggleChapter(this)">
+     <input type="checkbox" class="main-checkbox"> Thermodynamics
+  </div>
+  <div class="sub-options">
+    <label><input type="checkbox"> NCERT</label>
+    <label><input type="checkbox"> Reference Book</label>
+    <label><input type="checkbox"> Pyq's</label>
+    <label><input type="checkbox"> Dpp</label>
+    <label><input type="checkbox"> Revision</label>
+</div>
+
+<div class="chapter">
+  <div class="chapter-title" onclick="toggleChapter(this)">
+     <input type="checkbox" class="main-checkbox"> Chemical Equilibrium
+  </div>
+  <div class="sub-options">
+    <label><input type="checkbox"> NCERT</label>
+    <label><input type="checkbox"> Reference Book</label>
+    <label><input type="checkbox"> Pyq's</label>
+    <label><input type="checkbox"> Dpp</label>
+    <label><input type="checkbox"> Revision</label>
+</div>
+
+<div class="chapter">
+  <div class="chapter-title" onclick="toggleChapter(this)">
+     <input type="checkbox" class="main-checkbox"> Ionic Equilibrium
+  </div>
+  <div class="sub-options">
+    <label><input type="checkbox"> NCERT</label>
+    <label><input type="checkbox"> Reference Book</label>
+    <label><input type="checkbox"> Pyq's</label>
+    <label><input type="checkbox"> Dpp</label>
+    <label><input type="checkbox"> Revision</label>
+</div>
+
+<div class="chapter">
+  <div class="chapter-title" onclick="toggleChapter(this)">
+     <input type="checkbox" class="main-checkbox"> Redox Reactions
+  </div>
+  <div class="sub-options">
+    <label><input type="checkbox"> NCERT</label>
+    <label><input type="checkbox"> Reference Book</label>
+    <label><input type="checkbox"> Pyq's</label>
+    <label><input type="checkbox"> Dpp</label>
+    <label><input type="checkbox"> Revision</label>
+</div>
+
+<div class="chapter">
+  <div class="chapter-title" onclick="toggleChapter(this)">
+     <input type="checkbox" class="main-checkbox"> Solutions
+  </div>
+  <div class="sub-options">
+    <label><input type="checkbox"> NCERT</label>
+    <label><input type="checkbox"> Reference Book</label>
+    <label><input type="checkbox"> Pyq's</label>
+    <label><input type="checkbox"> Dpp</label>
+    <label><input type="checkbox"> Revision</label>
+</div>
+
+<div class="chapter">
+  <div class="chapter-title" onclick="toggleChapter(this)">
+     <input type="checkbox" class="main-checkbox"> Electrochemistry
+  </div>
+  <div class="sub-options">
+    <label><input type="checkbox"> NCERT</label>
+    <label><input type="checkbox"> Reference Book</label>
+    <label><input type="checkbox"> Pyq's</label>
+    <label><input type="checkbox"> Dpp</label>
+    <label><input type="checkbox"> Revision</label>
+</div>
+
+<div class="chapter">
+  <div class="chapter-title" onclick="toggleChapter(this)">
+     <input type="checkbox" class="main-checkbox"> Chemical Kinetics
+  </div>
+  <div class="sub-options">
+    <label><input type="checkbox"> NCERT</label>
+    <label><input type="checkbox"> Reference Book</label>
+    <label><input type="checkbox"> Pyq's</label>
+    <label><input type="checkbox"> Dpp</label>
+    <label><input type="checkbox"> Revision</label>
+</div>
+
+</div>
+
+
+<h4>Inorganic Chemistry</h4>
+
+<div class="chapter">
+  <div class="chapter-title" onclick="toggleChapter(this)">
+     <input type="checkbox" class="main-checkbox"> Periodic Table
+ </div>
+<div class="sub-options">
+    <label><input type="checkbox"> NCERT</label>
+    <label><input type="checkbox"> Reference Book</label>
+    <label><input type="checkbox"> Pyq's</label>
+    <label><input type="checkbox"> Dpp</label>
+    <label><input type="checkbox"> Revision</label> 
+</div>
+
+<div class="chapter">
+  <div class="chapter-title" onclick="toggleChapter(this)">
+     <input type="checkbox" class="main-checkbox"> Chemical Bonding And Molecular Structure
+ </div>
+<div class="sub-options">
+    <label><input type="checkbox"> NCERT</label>
+    <label><input type="checkbox"> Reference Book</label>
+    <label><input type="checkbox"> Pyq's</label>
+    <label><input type="checkbox"> Dpp</label>
+    <label><input type="checkbox"> Revision</label>
+</div>
+
+<div class="chapter">
+  <div class="chapter-title" onclick="toggleChapter(this)">
+     <input type="checkbox" class="main-checkbox"> The S-Block Elements
+ </div>
+<div class="sub-options">
+    <label><input type="checkbox"> NCERT</label>
+    <label><input type="checkbox"> Reference Book</label>
+    <label><input type="checkbox"> Pyq's</label>
+    <label><input type="checkbox"> Dpp</label>
+    <label><input type="checkbox"> Revision</label> 
+</div>
+
+<div class="chapter">
+  <div class="chapter-title" onclick="toggleChapter(this)">
+     <input type="checkbox" class="main-checkbox"> The p-Block Elements
+ </div>
+<div class="sub-options">
+    <label><input type="checkbox"> NCERT</label>
+    <label><input type="checkbox"> Reference Book</label>
+    <label><input type="checkbox"> Pyq's</label>
+    <label><input type="checkbox"> Dpp</label>
+    <label><input type="checkbox"> Revision</label> 
+</div>
+
+<div class="chapter">
+  <div class="chapter-title" onclick="toggleChapter(this)">
+     <input type="checkbox" class="main-checkbox"> The d & f Block Elements
+ </div>
+<div class="sub-options">
+    <label><input type="checkbox"> NCERT</label>
+    <label><input type="checkbox"> Reference Book</label>
+    <label><input type="checkbox"> Pyq's</label>
+    <label><input type="checkbox"> Dpp</label>
+    <label><input type="checkbox"> Revision</label> 
+</div>
+
+<div class="chapter">
+  <div class="chapter-title" onclick="toggleChapter(this)">
+     <input type="checkbox" class="main-checkbox"> Coordination Compounds
+ </div>
+<div class="sub-options">
+    <label><input type="checkbox"> NCERT</label>
+    <label><input type="checkbox"> Reference Book</label>
+    <label><input type="checkbox"> Pyq's</label>
+    <label><input type="checkbox"> Dpp</label>
+    <label><input type="checkbox"> Revision</label>
+</div>
+
+</div> 
+
+<h4>Organic Chemistry</h4>
+
+<div class="chapter">
+ <div class="chapter-title" onclick="toggleChapter(this)">
+   <input type="checkbox" class="main-checkbox"> IUPAC
+</div>
+<div class="sub-options">
+  <label><input type="checkbox"> NCERT</label>
+  <label><input type="checkbox"> Reference Book</label>
+  <label><input type="checkbox"> Pyq's</label>
+  <label><input type="checkbox"> Dpp
+  <label><input type="checkbox"> Revision
+</div>
+
+
+<div class="chapter">
+ <div class="chapter-title" onclick="toggleChapter(this)">
+   <input type="checkbox" class="main-checkbox"> General Organic Chemistry
+</div>
+<div class="sub-options">
+  <label><input type="checkbox"> NCERT</label>
+  <label><input type="checkbox"> Reference Book</label>
+  <label><input type="checkbox"> Pyq's</label>
+  <label><input type="checkbox"> Dpp
+  <label><input type="checkbox"> Revision
+</div>
+
+<div class="chapter">
+ <div class="chapter-title" onclick="toggleChapter(this)">
+   <input type="checkbox" class="main-checkbox"> Isomerism
+</div>
+<div class="sub-options">
+  <label><input type="checkbox"> NCERT</label>
+  <label><input type="checkbox"> Reference Book</label>
+  <label><input type="checkbox"> Pyq's</label>
+  <label><input type="checkbox"> Dpp
+  <label><input type="checkbox"> Revision
+</div>
+
+
+<div class="chapter">
+ <div class="chapter-title" onclick="toggleChapter(this)">
+   <input type="checkbox" class="main-checkbox"> Reaction Mechanism
+</div>
+<div class="sub-options">
+  <label><input type="checkbox"> NCERT</label>
+  <label><input type="checkbox"> Reference Book</label>
+  <label><input type="checkbox"> Pyq's</label>
+  <label><input type="checkbox"> Dpp
+  <label><input type="checkbox"> Revision
+</div>
+
+
+<div class="chapter">
+ <div class="chapter-title" onclick="toggleChapter(this)">
+   <input type="checkbox" class="main-checkbox"> HydroCarbons
+</div>
+<div class="sub-options">
+  <label><input type="checkbox"> NCERT</label>
+  <label><input type="checkbox"> Reference Book</label>
+  <label><input type="checkbox"> Pyq's</label>
+  <label><input type="checkbox"> Dpp
+  <label><input type="checkbox"> Revision
+</div>
+
+
+<div class="chapter">
+ <div class="chapter-title" onclick="toggleChapter(this)">
+   <input type="checkbox" class="main-checkbox"> Enviromental Chemistry 
+</div>
+<div class="sub-options">
+  <label><input type="checkbox"> NCERT</label>
+  <label><input type="checkbox"> Reference Book</label>
+  <label><input type="checkbox"> Pyq's</label>
+  <label><input type="checkbox"> Dpp
+  <label><input type="checkbox"> Revision
+</div>
+
+<div class="chapter">
+ <div class="chapter-title" onclick="toggleChapter(this)">
+   <input type="checkbox" class="main-checkbox"> Haloalkanes & Haloarenes 
+</div>
+<div class="sub-options">
+  <label><input type="checkbox"> NCERT</label>
+  <label><input type="checkbox"> Reference Book</label>
+  <label><input type="checkbox"> Pyq's</label>
+  <label><input type="checkbox"> Dpp
+  <label><input type="checkbox"> Revision
+</div>
+
+
+<div class="chapter">
+ <div class="chapter-title" onclick="toggleChapter(this)">
+   <input type="checkbox" class="main-checkbox"> Alcohols,Phenol,Ether 
+</div>
+<div class="sub-options">
+  <label><input type="checkbox"> NCERT</label>
+  <label><input type="checkbox"> Reference Book</label>
+  <label><input type="checkbox"> Pyq's</label>
+  <label><input type="checkbox"> Dpp
+  <label><input type="checkbox"> Revision
+</div>
+
+
+<div class="chapter">
+ <div class="chapter-title" onclick="toggleChapter(this)">
+   <input type="checkbox" class="main-checkbox"> Aldehydes,Ketones &Carboxylic Acids
+</div>
+<div class="sub-options">
+  <label><input type="checkbox"> NCERT</label>
+  <label><input type="checkbox"> Reference Book</label>
+  <label><input type="checkbox"> Pyq's</label>
+  <label><input type="checkbox"> Dpp
+  <label><input type="checkbox"> Revision
+</div>
+
+<div class="chapter">
+ <div class="chapter-title" onclick="toggleChapter(this)">
+   <input type="checkbox" class="main-checkbox"> Amines
+</div>
+<div class="sub-options">
+  <label><input type="checkbox"> NCERT</label>
+  <label><input type="checkbox"> Reference Book</label>
+  <label><input type="checkbox"> Pyq's</label>
+  <label><input type="checkbox"> Dpp
+  <label><input type="checkbox"> Revision
+</div>
+
+<div class="chapter">
+ <div class="chapter-title" onclick="toggleChapter(this)">
+   <input type="checkbox" class="main-checkbox"> Biomolecules
+</div>
+<div class="sub-options">
+  <label><input type="checkbox"> NCERT</label>
+  <label><input type="checkbox"> Reference Book</label>
+  <label><input type="checkbox"> Pyq's</label>
+  <label><input type="checkbox"> Dpp
+  <label><input type="checkbox"> Revision
+</div>
+
+</div>
+
+</td>
+
+<td class="subject-card maths">
+
+<h2> 📐 MATHEMATICS</h2>
+
+
+<p id="counter">0 of 29 chapters done</p>
+
+
+
+<div class="chapter">
+  <div class="chapter-title" onclick="toggleChapter(this)">
+    <input type="checkbox" class="main-checkbox"> Sets 
+</div>
+<div class="sub-options">
+  <label><input type="checkbox"> Reference Book</label>
+  <label><input type="checkbox"> Dpp</label>
+  <label><input type="checkbox"> Pyq's</label>
+  <label><input type="checkbox"> Revision
+</div>
+
+<div class="chapter">
+  <div class="chapter-title" onclick="toggleChapter(this)">
+    <input type="checkbox" class="main-checkbox"> Quadratic Equations 
+</div>
+<div class="sub-options">
+  <label><input type="checkbox"> Reference Book</label>
+  <label><input type="checkbox"> Dpp</label>
+  <label><input type="checkbox"> Pyq's</label>
+  <label><input type="checkbox"> Revision</label>
+</div>
+
+
+<div class="chapter">
+  <div class="chapter-title" onclick="toggleChapter(this)">
+    <input type="checkbox" class="main-checkbox"> Trignometric Function 
+</div>
+<div class="sub-options">
+  <label><input type="checkbox"> Reference Book</label>
+  <label><input type="checkbox"> Dpp</label>
+  <label><input type="checkbox"> Pyq's</label>
+  <label><input type="checkbox"> Revision</label>
+</div>
+
+<div class="chapter">
+  <div class="chapter-title" onclick="toggleChapter(this)">
+    <input type="checkbox" class="main-checkbox"> Complex Numbers 
+</div>
+<div class="sub-options">
+  <label><input type="checkbox"> Reference Book</label>
+  <label><input type="checkbox"> Dpp</label>
+  <label><input type="checkbox"> Pyq's</label>
+  <label><input type="checkbox"> Revision</label>
+</div>
+
+<div class="chapter">
+  <div class="chapter-title" onclick="toggleChapter(this)">
+    <input type="checkbox" class="main-checkbox"> Linear Inequalities 
+</div>
+<div class="sub-options">
+  <label><input type="checkbox"> Reference Book</label>
+  <label><input type="checkbox"> Dpp</label>
+  <label><input type="checkbox"> Pyq's</label>
+  <label><input type="checkbox"> Revision</label>
+</div>
+
+<div class="chapter">
+  <div class="chapter-title" onclick="toggleChapter(this)">
+    <input type="checkbox" class="main-checkbox"> Sequence And Series
+</div>
+<div class="sub-options">
+  <label><input type="checkbox"> Reference Book</label>
+  <label><input type="checkbox"> Dpp</label>
+  <label><input type="checkbox"> Pyq's</label>
+  <label><input type="checkbox"> Revision</label>
+</div>
+
+<div class="chapter">
+  <div class="chapter-title" onclick="toggleChapter(this)">
+    <input type="checkbox" class="main-checkbox"> Binomial Theorem 
+</div>
+<div class="sub-options">
+  <label><input type="checkbox"> Reference Book</label>
+  <label><input type="checkbox"> Dpp</label>
+  <label><input type="checkbox"> Pyq's</label>
+  <label><input type="checkbox"> Revision</label>
+</div>
+
+<div class="chapter">
+  <div class="chapter-title" onclick="toggleChapter(this)">
+    <input type="checkbox" class="main-checkbox"> Determinants 
+</div>
+<div class="sub-options">
+  <label><input type="checkbox"> Reference Book</label>
+  <label><input type="checkbox"> Dpp</label>
+  <label><input type="checkbox"> Pyq's</label>
+  <label><input type="checkbox"> Revision</label>
+</div>
+
+
+<div class="chapter">
+  <div class="chapter-title" onclick="toggleChapter(this)">
+    <input type="checkbox" class="main-checkbox"> Matrices 
+</div>
+<div class="sub-options">
+  <label><input type="checkbox"> Reference Book</label>
+  <label><input type="checkbox"> Dpp</label>
+  <label><input type="checkbox"> Pyq's</label>
+  <label><input type="checkbox"> Revision</label>
+</div>
+
+
+<div class="chapter">
+  <div class="chapter-title" onclick="toggleChapter(this)">
+    <input type="checkbox" class="main-checkbox"> Permutations And Combinations
+</div>
+<div class="sub-options">
+  <label><input type="checkbox"> Reference Book</label>
+  <label><input type="checkbox"> Dpp</label>
+  <label><input type="checkbox"> Pyq's</label>
+  <label><input type="checkbox"> Revision</label>
+</div>
+
+<div class="chapter">
+  <div class="chapter-title" onclick="toggleChapter(this)">
+    <input type="checkbox" class="main-checkbox"> Straight Lines
+</div>
+<div class="sub-options">
+  <label><input type="checkbox"> Reference Book</label>
+  <label><input type="checkbox"> Dpp</label>
+  <label><input type="checkbox"> Pyq's</label>
+  <label><input type="checkbox"> Revision</label>
+</div>
+
+<div class="chapter">
+  <div class="chapter-title" onclick="toggleChapter(this)">
+    <input type="checkbox" class="main-checkbox"> Circles
+</div>
+<div class="sub-options">
+  <label><input type="checkbox"> Reference Book</label>
+  <label><input type="checkbox"> Dpp</label
+  <label><input type="checkbox"> Pyq's</label>
+  <label><input type="checkbox"> Revision</label>
+</div>
+
+<div class="chapter">
+  <div class="chapter-title" onclick="toggleChapter(this)">
+    <input type="checkbox" class="main-checkbox"> Conic Sections(Parabola)
+</div>
+<div class="sub-options">
+  <label><input type="checkbox"> Reference Book</label>
+  <label><input type="checkbox"> Dpp</label>
+  <label><input type="checkbox"> Pyq's</label>
+  <label><input type="checkbox"> Revision</label>
+</div>
+
+<div class="chapter">
+  <div class="chapter-title" onclick="toggleChapter(this)">
+    <input type="checkbox" class="main-checkbox"> Conic Sections(Ellipse)
+</div>
+<div class="sub-options">
+  <label><input type="checkbox"> Reference Book</label>
+  <label><input type="checkbox"> Dpp</label>
+  <label><input type="checkbox"> Pyq's</label>
+  <label><input type="checkbox"> Revision</label>
+</div>
+
+<div class="chapter">
+  <div class="chapter-title" onclick="toggleChapter(this)">
+    <input type="checkbox" class="main-checkbox"> Conic Sections(Hyperbola)
+</div>
+<div class="sub-options">
+  <label><input type="checkbox"> Reference Book</label>
+  <label><input type="checkbox"> Dpp</label>
+  <label><input type="checkbox"> Pyq's</label>
+  <label><input type="checkbox"> Revision</label>
+</div>
+
+<div class="chapter">
+  <div class="chapter-title" onclick="toggleChapter(this)">
+    <input type="checkbox" class="main-checkbox"> Vector Algebra
+</div>
+<div class="sub-options">
+  <label><input type="checkbox"> Reference Book</label>
+  <label><input type="checkbox"> Dpp</label>
+  <label><input type="checkbox"> Pyq's</label>
+  <label><input type="checkbox"> Revision</label>
+</div>
+
+<div class="chapter">
+  <div class="chapter-title" onclick="toggleChapter(this)">
+    <input type="checkbox" class="main-checkbox"> 3-Dimensional Geometry
+</div>
+<div class="sub-options">
+  <label><input type="checkbox"> Reference Book</label>
+  <label><input type="checkbox"> Dpp</label>
+  <label><input type="checkbox"> Pyq's</label>
+  <label><input type="checkbox"> Revision</label>
+</div>
+
+
+ 
+
+<div class="chapter">
+  <div class="chapter-title" onclick="toggleChapter(this)">
+    <input type="checkbox" class="main-checkbox"> Functions And Relations
+</div>
+<div class="sub-options">
+  <label><input type="checkbox"> Reference Book</label>
+  <label><input type="checkbox"> Dpp</label>
+  <label><input type="checkbox"> Pyq's</label>
+  <label><input type="checkbox"> Revision</label>
+</div>
+
+<div class="chapter">
+  <div class="chapter-title" onclick="toggleChapter(this)">
+    <input type="checkbox" class="main-checkbox"> Limits
+</div>
+<div class="sub-options">
+  <label><input type="checkbox"> Reference Book</label>
+  <label><input type="checkbox"> Dpp</label>
+  <label><input type="checkbox"> Pyq's</label>
+  <label><input type="checkbox"> Revision</label>
+</div>
+
+<div class="chapter">
+  <div class="chapter-title" onclick="toggleChapter(this)">
+    <input type="checkbox" class="main-checkbox"> Continuity And Differentiability
+</div>
+<div class="sub-options">
+  <label><input type="checkbox"> Reference Book</label>
+  <label><input type="checkbox"> Dpp</label>
+  <label><input type="checkbox"> Pyq's</label>
+  <label><input type="checkbox"> Revision</label>
+</div>
+
+
+<div class="chapter">
+  <div class="chapter-title" onclick="toggleChapter(this)">
+    <input type="checkbox" class="main-checkbox"> Inverse Trignometric Functions
+</div>
+<div class="sub-options">
+  <label><input type="checkbox"> Reference Book</label>
+  <label><input type="checkbox"> Dpp</label>
+  <label><input type="checkbox"> Pyq's</label>
+  <label><input type="checkbox"> Revision</label>
+</div>
+
+<div class="chapter">
+  <div class="chapter-title" onclick="toggleChapter(this)">
+    <input type="checkbox" class="main-checkbox"> Method Of Differentiation
+</div>
+<div class="sub-options">
+  <label><input type="checkbox"> Reference Book</label>
+  <label><input type="checkbox"> Dpp</label>
+  <label><input type="checkbox"> Pyq's</label>
+  <label><input type="checkbox"> Revision</label>
+</div>
+
+<div class="chapter">
+  <div class="chapter-title" onclick="toggleChapter(this)">
+    <input type="checkbox" class="main-checkbox"> Application Of Derivatives 
+</div>
+<div class="sub-options">
+  <label><input type="checkbox"> Reference Book</label>
+  <label><input type="checkbox"> Dpp</label>
+  <label><input type="checkbox"> Pyq's</label>
+  <label><input type="checkbox"> Revision</label>
+</div>
+
+
+<div class="chapter">
+  <div class="chapter-title" onclick="toggleChapter(this)">
+    <input type="checkbox" class="main-checkbox"> Indefinite Integration   
+</div>
+<div class="sub-options">
+  <label><input type="checkbox"> Reference Book</label>
+  <label><input type="checkbox"> Dpp</label>
+  <label><input type="checkbox"> Pyq's</label>
+  <label><input type="checkbox"> Revision</label>
+</div>
+
+<div class="chapter">
+  <div class="chapter-title" onclick="toggleChapter(this)">
+    <input type="checkbox" class="main-checkbox"> Definite Integration   
+</div>
+<div class="sub-options">
+  <label><input type="checkbox"> Reference Book</label>
+  <label><input type="checkbox"> Dpp</label>
+  <label><input type="checkbox"> Pyq's</label>
+  <label><input type="checkbox"> Revision</label>
+</div>
+
+<div class="chapter">
+  <div class="chapter-title" onclick="toggleChapter(this)">
+    <input type="checkbox" class="main-checkbox"> Application Of Integrals    
+</div>
+<div class="sub-options">
+  <label><input type="checkbox"> Reference Book</label>
+  <label><input type="checkbox"> Dpp</label>
+  <label><input type="checkbox"> Pyq's</label>
+  <label><input type="checkbox"> Revision</label>
+</div>
+
+<div class="chapter">
+  <div class="chapter-title" onclick="toggleChapter(this)">
+    <input type="checkbox" class="main-checkbox"> Differential Equations   
+</div>
+<div class="sub-options">
+  <label><input type="checkbox"> Reference Book</label>
+  <label><input type="checkbox"> Dpp</label>
+  <label><input type="checkbox"> Pyq's</label>
+  <label><input type="checkbox"> Revision</label>
+</div>
+
+<div class="chapter">
+  <div class="chapter-title" onclick="toggleChapter(this)">
+    <input type="checkbox" class="main-checkbox"> Probability   
+</div>
+<div class="sub-options">
+  <label><input type="checkbox"> Reference Book</label>
+  <label><input type="checkbox"> Dpp</label>
+  <label><input type="checkbox"> Pyq's</label>
+  <label><input type="checkbox"> Revision</label>
+</div>
+
+<div class="chapter">
+  <div class="chapter-title" onclick="toggleChapter(this)">
+    <input type="checkbox" class="main-checkbox"> Statistics   
+</div>
+<div class="sub-options">
+  <label><input type="checkbox"> Reference Book</label>
+  <label><input type="checkbox"> Dpp</label>
+  <label><input type="checkbox"> Pyq's</label>
+  <label><input type="checkbox"> Revision</label>
+</div>
+
+</div>
+
+</td>
+
+</tr>
+
+</table>
+
+
+
+<script>
+ 
+  const checkboxes = document.querySelectorAll("input");
+
+ checkboxes.forEach(function(checkbox) {
+  checkbox.addEventListener("change", function () {
+
+    const text = checkbox.nextElementSibling;
+     
+     if (checkbox.checked) {
+         textE1.classList.add('done');
+
+   }  else {
+
+      textE1.classList.remove('done');
+   }
+
+     updateCounter();
+ });
+});
+
+function updateCounter() {
+  let doneCount = 0;
+  checboxes.forEach(function (checkbox) {
+   if (checkbox.checked) {
+     doneCount = doneCount + 1;
+  }
+});
+counterE1.innerText = doneCount+ 'of' + mainCheckboxes.length + 'chapters done';
+}
+
+</script>
+
+<script>
+
+window.toggleChapter = function (element) {
+
+ var chapter = element.closest('.chapter');
+
+if (chapter) {
+
+    chapter.classList.toggle('expanded');
+
+  }
+
+};
+
+</script>
+
+<script>
+const allCheckboxes = document.querySelectorAll('input[type="checkbox"]');
+
+window.addEventListener('load', function() {
+  const saved = JSON.parse(localStorage.getItem('jeeProgress')) || [];
+
+  allCheckboxes.forEach(function(box, index) {
+    if (saved[index]) {
+       box.checked = true;
+     }
+  });
+});
+
+
+allCheckboxes.forEach(function(box, index) {
+  box.addEventListener('change', function() {
+     const state = [];
+     allCheckboxes.forEach(function(b) {
+        state.push(b.checked);
+    });
+    localStorage.setItem('jeeProgress', JSON.stringify(state));
+   });
+ });
+
+function renderCountdown() {
+ 
+ var savedDate = getSavedExamDate();
+
+if (!savedDate) {
+
+  countdownText.textContent = "Set your JEE exam date to start the countdown \u23F3";
+
+return;
+
+}
+
+var today = new Date();
+
+today.setHours(0, 0, 0, 0);
+
+
+var parts = savedDate.split("-").map(Number);
+
+var target = new Date(parts[0], parts[1] - 1, parts[2]);
+
+target.setHours(0, 0, 0, 0);
+
+var msPerDay = 24 * 60 * 60 * 1000;
+
+var diffDays = Math.round((target - today) / msPerDay);
+
+if(diffDays > 0) {
+
+ countdownText.innerHTML =
+
+"\uD83D\uDD25 <span class=\"countdown-number\">" + diffDays + "</span> day" +
+
+(diffDays === 1 ? "" : "s") + " left for JEE!";
+
+} else if (diffDays === 0) {
+
+ countdownText.textContent = "\uD83D\uDE80 Today is the day! All the best!";
+
+} else {
+
+  countdownText.textContent = "\u2705 Exam date has passed. ";
+
+  }
+}
+
+
+function getSavedExamDate() {
+
+   return localStorage.getItem('jeeExamDate');
+
+}
+
+function saveExamDate(value) {
+
+  localStorage.setItem('jeeExamDate', value);
+
+}
+
+var countdownText = document.getElementById('countdown-text');
+
+var examDateInput = document.getElementById('exam-date-input');
+
+var savedExamDate = getSavedExamDate();
+if(savedExamDate) {
+   
+  examDateInput.value = savedExamDate;
+}
+
+examDateInput.addEventListener('change', function () {
+
+   saveExamDate(examDateInput.value);
+
+  renderCountdown();
+});
+
+renderCountdown();   
+
+
+
+/* refresh the countdown once a minute so it stays accurate
+   without needing a page refresh */
+
+(function () {
+
+ setInterval(renderCountdown, 60000);
+
+
+})();
+
+
+
+
+
+</script>
+
+
+</body>
+</html>
